@@ -34,8 +34,9 @@ class Compose:
         for transform in transforms:
             # `Compose` can be built with config dict with type and
             # corresponding arguments.
-            if isinstance(transform, dict):
-                transform = TRANSFORMS.build(transform)
+            # 如果是 dict, 就调用 TRANSFORMS 注册表的 build()
+            if isinstance(transform, dict):  
+                transform = TRANSFORMS.build(transform) 
                 if not callable(transform):
                     raise TypeError(f'transform should be a callable object, '
                                     f'but got {type(transform)}')
