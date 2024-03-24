@@ -76,7 +76,7 @@ class Compose:
         format_string = self.__class__.__name__ + '('
         for t in self.transforms:
             format_string += '\n'
-            format_string += f'    {t}'
+            format_string += f'    {t}'  # transform 自己的 __repr__
         format_string += '\n)'
         return format_string
 
@@ -165,6 +165,7 @@ class BaseDataset(Dataset):
         data_prefix (dict): Prefix for training data. Defaults to
             dict(img_path='').
         filter_cfg (dict, optional): Config for filter data. Defaults to None.
+        # 测试用的, 可以只使用指定数量的几条数据
         indices (int or Sequence[int], optional): Support using first few
             data in annotation file to facilitate training/testing on a smaller
         serialize_data (bool, optional): Whether to hold memory using
@@ -174,6 +175,7 @@ class BaseDataset(Dataset):
         pipeline (list, optional): Processing pipeline. Defaults to [].
         test_mode (bool, optional): ``test_mode=True`` means in test phase.
             Defaults to False.
+        # 有时候不一定需要真的加载 annotation, 比如可视化的时候不需要 GT
         lazy_init (bool, optional): Whether to load annotation during
             instantiation. In some cases, such as visualization, only the meta
             information of the dataset is needed, which is not necessary to
@@ -184,6 +186,7 @@ class BaseDataset(Dataset):
             image. Defaults to 1000.
 
     Note:
+        # 对于类别的 metainfo 加载有优先级区分..
         BaseDataset collects meta information from ``annotation file`` (the
         lowest priority), ``BaseDataset.METAINFO``(medium) and ``metainfo
         parameter`` (highest) passed to constructors. The lower priority meta
